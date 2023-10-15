@@ -1,6 +1,0 @@
-export enum STATUS {
-  PENDING,
-  COMPLETED,
-  DECLINED,
-  RETURNED,
-}

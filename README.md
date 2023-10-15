@@ -1,70 +1,29 @@
-# PWA E-Commerce Website (Backend)
+# 📝 eCommerce API
 
-## Authors
+## 📄 Overview
 
-- [@TRoYHD](https://github.com/TRoYHD)
+An eCommerce API facilitates the development of an online store, allowing users to create, update, and retrieve product information, process orders, and manage customer data securely. It provides essential functionalities for building a complete eCommerce website and enables seamless integration with front-end applications.
 
-## Instructions
+## 📊 Database Schema
 
-- [Technologies](#technologies)
-- [Project Structure](#project-structure)
-- [Environment variables](#environment-variables)
-- [Installation](#installation)
-- [Run Application](#run-application)
+[Database Schema](https://drawsql.app/teams/mohanad-1/diagrams/ecommerce)
 
-## Technologies
+## 🌐 API url
 
-- Node.js
-- TypeScript
-- Express.js
-- MySQL
-- Sequelize (ORM)
-- JSON Web Token
+[API](https://stormy-blue-rattlesnake.cyclic.app/products)
 
-## Project Structure
+## 📎 API Documentation
 
-```
-.
-└── PWA E-Commerce Website (Backend)/
-    ├── src/
-    │   ├── config/
-    │   │   └── enviroment.ts
-    │   ├── controllers/
-    │   ├── db/
-    │   │   ├── models/
-    │   │   ├── queries/
-    │   │   └── connection.ts
-    │   ├── middlewares/
-    │   ├── routers/
-    │   ├── utils/
-    │   │   ├── interfaces/
-    │   │   └── validators/
-    │   ├── app.ts
-    │   └── index.ts
-    ├── .env
-    ├── .gitignore
-    ├── .prettierrc
-    ├── package-lock.json
-    ├── package.json
-    ├── README.md
-    └── tsconfig.json
-```
+SOON
 
-## Environment Variables
+## 🎨 Design
 
-```
-PORT = 8080
-DB_DEV = ""
-DB_PRODUCTION = ""
-NODE_ENV = ""
-```
+You can find the design for the frontend on Figma. [Design](https://www.figma.com/file/bHnMNcAuXI1Zd6lyf6Oj1X/PWA-eCommerce-Theme-(Community)?type=design&node-id=184-0&mode=design&t=YYBh5qmVZNlRpmCM-0)
 
-## Installation
+## 📜 License
 
-- Install dependancies `npm install`
+The eCommerce API is released under the [MIT License](./LICENSE). This allows developers to freely use, modify, and distribute the API in their own projects while retaining the original license.
 
-## Run Application
+## 🤝 Contribution
 
-- You can run app in development mode `npm run dev` or in production mode `npm start`
-Database Schema:
-![image](https://i.imgur.com/8hK2AhK.png)
+Contributions to the eCommerce API are welcome! You can submit bug reports, suggest new features, or even contribute directly to the codebase. We appreciate your support in making the eCommerce API even better!
