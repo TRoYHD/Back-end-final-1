@@ -6,7 +6,7 @@ An eCommerce API facilitates the development of an online store, allowing users 
 
 ## 📊 Database Schema
 
-[Database Schema](https://drawsql.app/teams/mohanad-1/diagrams/ecommerce)
+[Database Schema](https://drawsql.app/teams/troyhd/diagrams/ecommerce)
 
 ## 🌐 API url
 
