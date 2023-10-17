@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start:dev": "nodemon src/index.ts",
-    "build": "yarn install && tsc",
+    "build": "tsc" ,
     "start": "node build"
   },
   "devDependencies": {
