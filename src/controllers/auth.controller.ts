@@ -57,4 +57,14 @@ const signIn: RequestHandler<object, object, SignIn> = async (
   res.json({ user: payload, token });
 };
 
-export { signUp, signIn };
+const signOut: RequestHandler = async (req: Request, res: Response) => {
+  // Clear the authentication token from the client-side (browser)
+  res.clearCookie('token');
+
+  // Send a response indicating successful sign-out
+  res.status(httpStatus.OK).json({ message: 'User has been successfully signed out' });
+ 
+};
+
+export { signUp, signIn, signOut };
+
