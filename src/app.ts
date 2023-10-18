@@ -27,12 +27,12 @@ const app: Application = express();
 app.use(urlencoded({ extended: false }));
 app.use(json());
 app.use(cors({ origin: '*' }));
-app.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: '/tmp'
-  })
-);
+app.use(fileUpload({
+  
+  useTempFiles: true,
+  tempFileDir: '/tmp'
+}));
+
 app.use(passport.initialize());
 app.use(cookieParser());
 

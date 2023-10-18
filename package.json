@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start:dev": "nodemon src/index.ts",
-    "build": "tsc" ,
+    "build": "tsc",
     "start": "node build"
   },
   "devDependencies": {
@@ -39,11 +39,12 @@
     "http-status": "^1.7.0",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.1",
-    "mysql2": "^3.4.3",
+    "mysql2": "^3.6.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.32.1",
+    "sequelize": "^6.33.0",
+    "sequelize-cli": "^6.6.1",
     "sequelize-typescript": "^2.1.5"
   }
 }
