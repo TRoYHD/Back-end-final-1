@@ -22,8 +22,10 @@ const getBrand: RequestHandler<Params> = async (
   const { id } = req.params;
 
   const brand = await Brand.findByPk(id);
+  console.log('Requested Brand ID:', id);
 
   if (!brand) throw new CustomError('Brand not found', httpStatus.NOT_FOUND);
+  console.log('Brand not found in the database.');
 
   res.json(brand);
 };
