@@ -30,6 +30,19 @@ module.exports = {
         createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
         updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
+      {
+        name: 'Product 3',
+        description: 'Description 1',
+        color: 'greem',
+        price: 50.0,
+        discount: 10,
+        rating: 4.5,
+        isLimited: true,
+        category_id: 1, // Replace with the appropriate category ID
+        brand_id: 1, // Replace with the appropriate brand ID
+        createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
+        updatedAt: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
       // Add more sample products as needed
     ];
 
