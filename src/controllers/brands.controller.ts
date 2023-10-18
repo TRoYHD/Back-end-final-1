@@ -31,10 +31,15 @@ const getBrand: RequestHandler<Params> = async (
 const createBrand: RequestHandler<Params, object, Brand> = async (
   req: Request<Params, object, Brand>,
   res: Response
+  
 ) => {
+  console.log('Request Body:', req.body);
+console.log('Request Files:', req.files);
   const body = validateBrand(req.body);
 
-  const { name, description } = body;
+  // Trim field names
+  const name = body.name.trim();
+  const description = body.description.trim();
 
   if (req.files && req.files.image && !Array.isArray(req.files.image)) {
     const imgTempPath = req.files.image.tempFilePath;

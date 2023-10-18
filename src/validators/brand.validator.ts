@@ -7,7 +7,7 @@ export type Brand = Category;
 const BrandSchema = Joi.object({
   name: Joi.string().required(),
   description: Joi.string().required()
-});
+}).unknown(true);
 
 const validateBrand = (body: Brand): Brand => {
   const { error, value } = BrandSchema.validate(body);
