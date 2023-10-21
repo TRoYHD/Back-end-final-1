@@ -66,3 +66,34 @@ const signOut: RequestHandler = async (req: Request, res: Response) => {
 
 export { signUp, signIn, signOut };
 
+// To send the token from the server to the frontend team so that they can store it in local storage, you can include the token in the JSON response sent from the server. Here's an example of how you can modify your server-side code to achieve this:
+
+// javascript
+// Copy code
+// const token = generateToken(payload, envConfig.secret);
+
+// // Sending the token in the response to the frontend team
+// res.json({ user: payload, token });
+// In this code snippet, after generating the token using the generateToken function, you include it in the JSON response object. When the frontend team receives the response on the client-side, they can extract the token from the JSON response and store it in the local storage using JavaScript.
+
+// On the frontend side (in a JavaScript file or script tag in your HTML file), you can handle the response and store the token in local storage like this:
+
+// javascript
+// Copy code
+// // Assuming you make a fetch or XMLHttpRequest to the server and get the response object
+// fetch('your-api-endpoint')
+//   .then(response => response.json())
+//   .then(data => {
+//     // Extract the token from the response
+//     const token = data.token;
+
+//     // Store the token in local storage
+//     localStorage.setItem('token', token);
+
+//     // Now, the token is stored in local storage and can be used as needed
+//   })
+//   .catch(error => {
+//     console.error('Error:', error);
+//   });
+// In this example, the localStorage.setItem('token', token) line stores the received token in the local storage of the user's 
+// browser. From this point, the frontend team can access the token from local storage and use it in subsequent requests to the server for authentication or other purposes.
