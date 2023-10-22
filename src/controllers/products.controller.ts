@@ -104,7 +104,7 @@ const getPopularInTheCommunity: RequestHandler<
   res.json({ count, rows });
 };
 
-const getLimitedEdtionProducts: RequestHandler<
+const getLimitedEditionProducts: RequestHandler<
   object,
   object,
   object,
@@ -259,7 +259,7 @@ export {
   createProduct,
   getPopularInTheCommunity,
   uploadProductImage,
-  getLimitedEdtionProducts,
+  getLimitedEditionProducts,
   searchProducts,
   getNewArrivals,
   getHandpickedCollections

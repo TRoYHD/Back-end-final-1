@@ -5,7 +5,7 @@ import {
   createProduct,
   getPopularInTheCommunity,
   uploadProductImage,
-  getLimitedEdtionProducts,
+  getLimitedEditionProducts,
   searchProducts,
   getNewArrivals,
   getHandpickedCollections
@@ -25,7 +25,7 @@ productsRouter.get(
 productsRouter.get(
   '/limited-edition',
   paginateMiddleware,
-  use(getLimitedEdtionProducts)
+  use(getLimitedEditionProducts)
 );
 productsRouter.get(
   '/handpicked-collections',
