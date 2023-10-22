@@ -18,10 +18,10 @@ module.exports = {
       // Add more objects with your custom URLs as needed
     ];
 
-    await queryInterface.bulkInsert('ProductImages', productImages, {});
+    await queryInterface.bulkInsert('Product_Images', productImages, {});
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('ProductImages', null, {});
+    await queryInterface.bulkDelete('Product_Images', null, {});
   }
 };
