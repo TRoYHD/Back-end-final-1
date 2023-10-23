@@ -12,6 +12,7 @@ module.exports = {
         discount: 10,
         rating: 4.5,
         isLimited: true,
+        stock: 15,
         category_id: 1, // Replace with the appropriate category ID
         brand_id: 1, // Replace with the appropriate brand ID
         createdAt: Sequelize.literal('CURRENT_TIMESTAMP'),
