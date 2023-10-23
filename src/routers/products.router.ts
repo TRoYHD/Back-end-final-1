@@ -8,7 +8,8 @@ import {
   getLimitedEditionProducts,
   searchProducts,
   getNewArrivals,
-  getHandpickedCollections
+  getHandpickedCollections ,
+  getProductsByDiscount
 } from '../controllers/products.controller';
 import { use } from '../helpers';
 import { paginateMiddleware } from '../middlewares/paginate.middleware';
@@ -36,5 +37,6 @@ productsRouter.put('/:id', use(uploadProductImage));
 productsRouter.get('/search', paginateMiddleware, use(searchProducts));
 productsRouter.get('/new-arrivals', paginateMiddleware, use(getNewArrivals));
 productsRouter.get('/:id', use(getProduct));
+productsRouter.get('/products/discount', getProductsByDiscount);
 
 export default productsRouter;

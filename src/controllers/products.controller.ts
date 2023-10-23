@@ -76,6 +76,40 @@ const createProduct: RequestHandler = async (
   res.status(httpStatus.CREATED).json(product);
 };
 
+
+const getProductsByDiscount: RequestHandler<
+  object,
+  object,
+  object,
+  PaginationQuery
+> = async (
+  req: Request<object, object, object, PaginationQuery>,
+  res: Response
+) => {
+  const page = req.query.page ? parseInt(req.query.page) : 1;
+  const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
+
+  const { count: filteredCount, rows: filteredRows } = await Product.findAndCountAll({
+    where: {
+      discount: { [Op.gte]: 15 }
+    }
+  });
+
+  const filteredProducts = filteredRows.filter(product => {
+    const discountedPrice = product.price - (product.price * (product.discount / 100));
+    return discountedPrice >= product.price * 0.15;
+  });
+
+  const startIndex = (page - 1) * perPage;
+  const endIndex = startIndex + perPage;
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+  res.json({ count: paginatedProducts.length, rows: paginatedProducts });
+};
+
+
+
+
 const getPopularInTheCommunity: RequestHandler<
   object,
   object,
@@ -265,5 +299,6 @@ export {
   getLimitedEditionProducts,
   searchProducts,
   getNewArrivals,
-  getHandpickedCollections
+  getHandpickedCollections ,
+  getProductsByDiscount
 };
