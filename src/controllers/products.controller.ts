@@ -121,7 +121,10 @@ const getLimitedEditionProducts: RequestHandler<
       model: ProductImages
     },
     where: {
-      isLimited: true
+      isLimited: true,
+      stock: {
+        [Op.lt]: 20,
+      },
     },
     offset: (page - 1) * perPage,
     limit: perPage,

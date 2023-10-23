@@ -65,7 +65,14 @@ export default class Product extends Model {
     defaultValue: false
   })
   isLimited!: boolean;
-
+  
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    defaultValue: 0
+  })
+  stock!: number;
+  
   @ForeignKey(() => Category)
   @Column({
     type: DataType.INTEGER,
