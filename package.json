@@ -12,7 +12,7 @@
   "scripts": {
     "start:dev": "nodemon src/index.ts",
     "build": "tsc",
-    "start": "nodemon app.js"
+    "start": "node build/index.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
