@@ -1,7 +1,7 @@
 {
   "name": "backend-final-1",
   "version": "1.0.0",
-  "main": "app.ts",
+  "main": "index.ts",
   "license": "MIT",
   "repository": "https:/t",
   "author": ">",
@@ -12,7 +12,7 @@
   "scripts": {
     "start:dev": "nodemon src/index.ts",
     "build": "tsc",
-    "start": "node build"
+    "start": "nodemon app.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
