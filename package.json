@@ -7,7 +7,7 @@
   "author": ">",
   "private": false,
   "engines": {
-  "node": ">=16.14"
+  "node": "21.0.0"
   },
   "scripts": {
     "start:dev": "nodemon src/index.ts",
