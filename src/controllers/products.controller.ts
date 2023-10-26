@@ -218,7 +218,7 @@ const getHandpickedCollections: RequestHandler<
     distinct: true
   });
 
-  res.json({ count, rows });
+   res.json({ count, rows });
 };
 
 const searchProducts: RequestHandler<
