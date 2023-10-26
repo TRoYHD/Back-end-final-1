@@ -208,9 +208,6 @@ const getHandpickedCollections: RequestHandler<
   req: Request<object, object, object, PaginationQuery>,
   res: Response
 ) => {
-  const page = req.query.page ? parseInt(req.query.page) : 1;
-  const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
-
   const { count, rows } = await Product.findAndCountAll({
     include: {
       model: ProductImages
@@ -218,8 +215,6 @@ const getHandpickedCollections: RequestHandler<
     where: {
       [Op.and]: [{ rating: { [Op.gt]: 4.5 } }, { price: { [Op.lt]: 100 } }]
     },
-    offset: (page - 1) * perPage,
-    limit: perPage,
     distinct: true
   });
 
