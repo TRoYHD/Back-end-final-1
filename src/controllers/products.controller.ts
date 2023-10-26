@@ -199,13 +199,8 @@ const getNewArrivals: RequestHandler<
   res.json({ count, rows });
 };
 
-const getHandpickedCollections: RequestHandler<
-  object,
-  object,
-  object,
-  PaginationQuery
-> = async (
-  req: Request<object, object, object, PaginationQuery>,
+const getHandpickedCollections: RequestHandler<object, object, object> = async (
+  req: Request<object, object, object>,
   res: Response
 ) => {
   const { count, rows } = await Product.findAndCountAll({
@@ -218,8 +213,9 @@ const getHandpickedCollections: RequestHandler<
     distinct: true
   });
 
-   res.json({ count, rows });
+  res.json({ count, rows });
 };
+
 
 const searchProducts: RequestHandler<
   object,
