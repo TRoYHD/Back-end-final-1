@@ -10,11 +10,11 @@ An eCommerce API facilitates the development of an online store, allowing users 
 
 ## 🌐 API url
 
-[API] SOON
+[API] (https://e-store-comerce.onrender.com/)
 
 ## 📎 API Documentation
 
-SOON
+SOON  (https://e-store-comerce.onrender.com/)
 
 ## 🎨 Design
 
