@@ -139,8 +139,6 @@ const getNewArrivals = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getNewArrivals = getNewArrivals;
 const getHandpickedCollections = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const page = req.query.page ? parseInt(req.query.page) : 1;
-    const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
     const { count, rows } = yield models_1.Product.findAndCountAll({
         include: {
             model: models_1.ProductImages
@@ -148,8 +146,6 @@ const getHandpickedCollections = (req, res) => __awaiter(void 0, void 0, void 0,
         where: {
             [sequelize_1.Op.and]: [{ rating: { [sequelize_1.Op.gt]: 4.5 } }, { price: { [sequelize_1.Op.lt]: 100 } }]
         },
-        offset: (page - 1) * perPage,
-        limit: perPage,
         distinct: true
     });
     res.json({ count, rows });
