@@ -11,7 +11,6 @@ import {
 import {
   Category,
   Brand,
-  ProductImages,
   FavouriteList,
   CartItem,
   User
@@ -65,14 +64,20 @@ export default class Product extends Model {
     defaultValue: false
   })
   isLimited!: boolean;
-  
+
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
     defaultValue: 0
   })
   stock!: number;
-  
+
+  @Column({
+    type: DataType.STRING, // Assuming the image URL is a string
+    allowNull: false
+  })
+  imageUrl!: string;
+
   @ForeignKey(() => Category)
   @Column({
     type: DataType.INTEGER,
@@ -92,19 +97,6 @@ export default class Product extends Model {
 
   @BelongsTo(() => Brand)
   brand!: Brand;
-
-  @HasMany(() => ProductImages)
-  images!: ProductImages[];
-
-  public async addImage(imageUrl: string): Promise<ProductImages> {
-    const image = new ProductImages({ image: imageUrl });
-
-    image.product_id = this.id;
-    await image.save();
-    this.images.push(image);
-
-    return image;
-  }
 
   @BelongsToMany(() => User, () => FavouriteList)
   users!: User[];
