@@ -12,11 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductsByDiscount = exports.getHandpickedCollections = exports.getNewArrivals = exports.searchProducts = exports.getLimitedEditionProducts = exports.uploadProductImage = exports.getPopularInTheCommunity = exports.createProduct = exports.getProduct = exports.getProducts = void 0;
+exports.getProductsByDiscount = exports.getHandpickedCollections = exports.getNewArrivals = exports.searchProducts = exports.getLimitedEditionProducts = exports.getPopularInTheCommunity = exports.createProduct = exports.getProduct = exports.getProducts = void 0;
 const models_1 = require("../models");
 const errors_1 = require("../middlewares/errors");
 const http_status_1 = __importDefault(require("http-status"));
-const cloudinary_config_1 = __importDefault(require("../config/cloudinary.config"));
 const sequelize_1 = require("sequelize");
 const validators_1 = require("../validators");
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,7 +29,6 @@ const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         };
     }
     const { count, rows } = yield models_1.Product.findAndCountAll({
-        include: { model: models_1.ProductImages },
         where,
         offset: (page - 1) * perPage,
         limit: perPage,
@@ -41,9 +39,7 @@ const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getProducts = getProducts;
 const getProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const product = yield models_1.Product.findByPk(id, {
-        include: { model: models_1.ProductImages }
-    });
+    const product = yield models_1.Product.findByPk(id);
     if (!product)
         throw new errors_1.CustomError('Product not found', http_status_1.default.NOT_FOUND);
     res.json(product);
@@ -83,9 +79,6 @@ const getPopularInTheCommunity = (req, res) => __awaiter(void 0, void 0, void 0,
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
     const { count, rows } = yield models_1.Product.findAndCountAll({
-        include: {
-            model: models_1.ProductImages
-        },
         where: {
             rating: {
                 [sequelize_1.Op.gte]: 4.5
@@ -102,9 +95,6 @@ const getLimitedEditionProducts = (req, res) => __awaiter(void 0, void 0, void 0
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
     const { count, rows } = yield models_1.Product.findAndCountAll({
-        include: {
-            model: models_1.ProductImages
-        },
         where: {
             isLimited: true,
             stock: {
@@ -125,7 +115,6 @@ const getNewArrivals = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const threeMonthsAgo = new Date();
     threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
     const { count, rows } = yield models_1.Product.findAndCountAll({
-        include: [models_1.ProductImages],
         where: {
             createdAt: {
                 [sequelize_1.Op.between]: [threeMonthsAgo, currentDate]
@@ -140,9 +129,6 @@ const getNewArrivals = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getNewArrivals = getNewArrivals;
 const getHandpickedCollections = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { count, rows } = yield models_1.Product.findAndCountAll({
-        include: {
-            model: models_1.ProductImages
-        },
         where: {
             [sequelize_1.Op.and]: [{ rating: { [sequelize_1.Op.gt]: 4.5 } }, { price: { [sequelize_1.Op.lt]: 100 } }]
         },
@@ -167,8 +153,7 @@ const searchProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
             {
                 model: models_1.Brand,
                 where: {}
-            },
-            { model: models_1.ProductImages }
+            }
         ],
         offset: (page - 1) * perPage,
         limit: perPage,
@@ -177,25 +162,4 @@ const searchProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
     res.json({ count, rows });
 });
 exports.searchProducts = searchProducts;
-const uploadProductImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    if (req.files && req.files.image && !Array.isArray(req.files.image)) {
-        const imgTempPath = req.files.image.tempFilePath;
-        const result = yield cloudinary_config_1.default.uploader.upload(imgTempPath);
-        const image = result.url;
-        const product = yield models_1.Product.findByPk(id, {
-            include: { model: models_1.ProductImages }
-        });
-        if (!product)
-            throw new errors_1.CustomError('Product not found', http_status_1.default.NOT_FOUND);
-        yield product.addImage(image);
-        return res
-            .status(http_status_1.default.CREATED)
-            .json({ msg: 'Uploaded successfully' });
-    }
-    res
-        .status(http_status_1.default.UNPROCESSABLE_ENTITY)
-        .json({ msg: 'Please upload an image' });
-});
-exports.uploadProductImage = uploadProductImage;
 //# sourceMappingURL=products.controller.js.map
