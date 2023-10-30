@@ -62,7 +62,7 @@ const getCartProducts = (req, res) => __awaiter(void 0, void 0, void 0, function
         throw new errors_1.CustomError('User not found', http_status_1.default.NOT_FOUND);
     const cart = yield user.getCart();
     const cartItems = yield cart.$get('cartItems', {
-        include: { model: models_1.Product, include: [models_1.ProductImages] }
+        include: { model: models_1.Product }
     });
     res.status(http_status_1.default.OK).json(cartItems);
 });

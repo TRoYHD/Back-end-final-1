@@ -28,7 +28,6 @@ const connection = new sequelize_typescript_1.Sequelize({
         models_1.Product,
         models_1.Category,
         models_1.Brand,
-        models_1.ProductImages,
         models_1.Order,
         models_1.User,
         models_1.FavouriteList,
