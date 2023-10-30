@@ -1,8 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { Brand, Category, Product, ProductImages } from '../models';
+import { Brand, Category, Product } from '../models';
 import { CustomError } from '../middlewares/errors';
 import httpStatus from 'http-status';
-import cloudinary from '../config/cloudinary.config';
 import { Op } from 'sequelize';
 import { validateProduct } from '../validators';
 import { Product as ProductDTO } from '../validators/product.validator';
@@ -30,7 +29,6 @@ const getProducts: RequestHandler<
   }
 
   const { count, rows } = await Product.findAndCountAll({
-    include: { model: ProductImages },
     where,
     offset: (page - 1) * perPage,
     limit: perPage,
@@ -46,9 +44,7 @@ const getProduct: RequestHandler<Params> = async (
 ) => {
   const { id } = req.params;
 
-  const product = await Product.findByPk(id, {
-    include: { model: ProductImages }
-  });
+  const product = await Product.findByPk(id);
 
   if (!product)
     throw new CustomError('Product not found', httpStatus.NOT_FOUND);
@@ -75,7 +71,6 @@ const createProduct: RequestHandler = async (
 
   res.status(httpStatus.CREATED).json(product);
 };
-
 
 const getProductsByDiscount: RequestHandler<
   object,
@@ -107,9 +102,6 @@ const getProductsByDiscount: RequestHandler<
   res.json({ count: paginatedProducts.length, rows: paginatedProducts });
 };
 
-
-
-
 const getPopularInTheCommunity: RequestHandler<
   object,
   object,
@@ -122,9 +114,6 @@ const getPopularInTheCommunity: RequestHandler<
   const page = req.query.page ? parseInt(req.query.page) : 1;
   const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
   const { count, rows } = await Product.findAndCountAll({
-    include: {
-      model: ProductImages
-    },
     where: {
       rating: {
         [Op.gte]: 4.5
@@ -151,9 +140,6 @@ const getLimitedEditionProducts: RequestHandler<
   const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
 
   const { count, rows } = await Product.findAndCountAll({
-    include: {
-      model: ProductImages
-    },
     where: {
       isLimited: true,
       stock: {
@@ -185,7 +171,6 @@ const getNewArrivals: RequestHandler<
   threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
 
   const { count, rows } = await Product.findAndCountAll({
-    include: [ProductImages],
     where: {
       createdAt: {
         [Op.between]: [threeMonthsAgo, currentDate]
@@ -204,9 +189,6 @@ const getHandpickedCollections: RequestHandler<object, object, object> = async (
   res: Response
 ) => {
   const { count, rows } = await Product.findAndCountAll({
-    include: {
-      model: ProductImages
-    },
     where: {
       [Op.and]: [{ rating: { [Op.gt]: 4.5 } }, { price: { [Op.lt]: 100 } }]
     },
@@ -215,7 +197,6 @@ const getHandpickedCollections: RequestHandler<object, object, object> = async (
 
   res.json({ count, rows });
 };
-
 
 const searchProducts: RequestHandler<
   object,
@@ -241,8 +222,7 @@ const searchProducts: RequestHandler<
       {
         model: Brand,
         where: {}
-      },
-      { model: ProductImages }
+      }
     ],
     offset: (page - 1) * perPage,
     limit: perPage,
@@ -252,44 +232,14 @@ const searchProducts: RequestHandler<
   res.json({ count, rows });
 };
 
-const uploadProductImage: RequestHandler<Params> = async (
-  req: Request<Params>,
-  res: Response
-) => {
-  const { id } = req.params;
-  if (req.files && req.files.image && !Array.isArray(req.files.image)) {
-    const imgTempPath = req.files.image.tempFilePath;
-    const result = await cloudinary.uploader.upload(imgTempPath);
-
-    const image = result.url;
-    const product = await Product.findByPk(id, {
-      include: { model: ProductImages }
-    });
-
-    if (!product)
-      throw new CustomError('Product not found', httpStatus.NOT_FOUND);
-
-    await product.addImage(image);
-
-    return res
-      .status(httpStatus.CREATED)
-      .json({ msg: 'Uploaded successfully' });
-  }
-
-  res
-    .status(httpStatus.UNPROCESSABLE_ENTITY)
-    .json({ msg: 'Please upload an image' });
-};
-
 export {
   getProducts,
   getProduct,
   createProduct,
   getPopularInTheCommunity,
-  uploadProductImage,
   getLimitedEditionProducts,
   searchProducts,
   getNewArrivals,
-  getHandpickedCollections ,
+  getHandpickedCollections,
   getProductsByDiscount
 };
