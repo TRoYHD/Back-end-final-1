@@ -4,7 +4,6 @@ import {
   getProducts,
   createProduct,
   getPopularInTheCommunity,
-  uploadProductImage,
   getLimitedEditionProducts,
   searchProducts,
   getNewArrivals,
@@ -33,7 +32,7 @@ productsRouter.get(
   paginateMiddleware,
   use(getHandpickedCollections)
 );
-productsRouter.put('/:id', use(uploadProductImage));
+// productsRouter.put('/:id', use(uploadProductImage));
 productsRouter.get('/search', paginateMiddleware, use(searchProducts));
 productsRouter.get('/new-arrivals', paginateMiddleware, use(getNewArrivals));
 productsRouter.get('/:id', use(getProduct));

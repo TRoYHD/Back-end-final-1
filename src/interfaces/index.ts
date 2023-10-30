@@ -12,3 +12,14 @@ export interface Payload {
   name: string;
   email: string;
 }
+export interface ParamsDictionary {
+  [key: string]: string;
+}
+
+export interface QueryString {
+  [key: string]: string | string[] | undefined;
+}
+
+export interface ParsedQs {
+  [key: string]: string | string[] | undefined;
+}

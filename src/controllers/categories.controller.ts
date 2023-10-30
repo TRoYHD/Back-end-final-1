@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { Category, Product, ProductImages } from '../models';
+import { Category, Product,  } from '../models';
 import { CustomError } from '../middlewares/errors';
 import httpStatus from 'http-status';
 import cloudinary from '../config/cloudinary.config';
@@ -51,7 +51,7 @@ const getCategoryProducts: RequestHandler<
         },
         attributes: []
       },
-      { model: ProductImages }
+      
     ],
     offset: (page - 1) * perPage,
     limit: perPage,

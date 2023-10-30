@@ -6,6 +6,7 @@ import { Op } from 'sequelize';
 import { validateProduct } from '../validators';
 import { Product as ProductDTO } from '../validators/product.validator';
 import { Params, PaginationQuery } from '../interfaces';
+import { ParamsDictionary, QueryString } from '../interfaces'; // Import necessary types
 
 const getProducts: RequestHandler<
   object,
@@ -184,18 +185,23 @@ const getNewArrivals: RequestHandler<
   res.json({ count, rows });
 };
 
-const getHandpickedCollections: RequestHandler<object, object, object> = async (
-  req: Request<object, object, object>,
+const getHandpickedCollections = async (
+  req: Request<any, any, any, PaginationQuery>,
   res: Response
 ) => {
-  const { count, rows } = await Product.findAndCountAll({
-    where: {
-      [Op.and]: [{ rating: { [Op.gt]: 4.5 } }, { price: { [Op.lt]: 100 } }]
-    },
-    distinct: true
-  });
+  try {
+    const { count, rows } = await Product.findAndCountAll({
+      where: {
+        [Op.and]: [{ rating: { [Op.gt]: 4.5 } }, { price: { [Op.lt]: 100 } }]
+      },
+      distinct: true
+    });
 
-  res.json({ count, rows });
+    res.json({ count, rows });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 const searchProducts: RequestHandler<

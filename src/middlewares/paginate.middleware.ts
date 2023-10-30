@@ -1,20 +1,24 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { PaginationQuery } from '../interfaces';
 
-const paginate = (data: any) => {
-  const totalPages = Math.ceil(data.count / data.perPage);
-  const totalPerPage = data.perPage;
-  const currentPage = data.page;
-  const prevPage = currentPage === 1 ? null : currentPage - 1;
-  const nextPage = currentPage >= totalPages ? null : currentPage + 1;
+interface PaginatedData {
+  rows: any[];
+  count: number;
+}
+
+const paginate = (data: PaginatedData, page: number, perPage: number) => {
+  const totalPages = Math.ceil(data.count / perPage);
+  const totalPerPage = perPage > data.count ? data.count : perPage;
+  const prevPage = page === 1 ? null : page - 1;
+  const nextPage = page >= totalPages ? null : page + 1;
 
   return {
-    data: data.data,
+    data: data.rows,
     pagination: {
       totalRecords: data.count,
-      totalPerPage: totalPerPage > data.count ? data.count : totalPerPage,
+      totalPerPage,
       totalPages,
-      currentPage,
+      currentPage: page,
       nextPage,
       prevPage
     }
@@ -32,24 +36,19 @@ export const paginateMiddleware: RequestHandler<
   next: NextFunction
 ) => {
   if (req.method !== 'GET') return next();
+
   let oldSend = res.send;
-  const page = req.query.page ? parseInt(req.query.page) : 1;
-  const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
+  const page = req.query.page ? parseInt(req.query.page as string) : 1;
+  const perPage = req.query.perPage ? parseInt(req.query.perPage as string) : 1;
 
   res.send = function (data) {
     let parsedData = JSON.parse(data);
     res.send = oldSend;
 
-    if (parsedData?.error) res.send(parsedData);
+    if (parsedData?.error) return res.send(parsedData);
 
-    const result = paginate({
-      data: parsedData.rows,
-      count: parsedData.count,
-      page,
-      perPage
-    });
-
-    return res.send(result);
+    const paginatedData = paginate(parsedData, page, perPage);
+    return res.send(paginatedData);
   };
 
   next();
