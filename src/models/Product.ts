@@ -76,7 +76,7 @@ export default class Product extends Model {
     type: DataType.STRING, // Assuming the image URL is a string
     allowNull: false
   })
-  imageUrl!: string;
+  image!: string;
 
   @ForeignKey(() => Category)
   @Column({
