@@ -44,7 +44,6 @@ const getCategoryProducts = (req, res) => __awaiter(void 0, void 0, void 0, func
                 },
                 attributes: []
             },
-            { model: models_1.ProductImages }
         ],
         offset: (page - 1) * perPage,
         limit: perPage,

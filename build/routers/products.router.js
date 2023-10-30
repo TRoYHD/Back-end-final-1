@@ -10,7 +10,7 @@ productsRouter.post('/', (0, helpers_1.use)(products_controller_1.createProduct)
 productsRouter.get('/popular', paginate_middleware_1.paginateMiddleware, (0, helpers_1.use)(products_controller_1.getPopularInTheCommunity));
 productsRouter.get('/limited-edition', paginate_middleware_1.paginateMiddleware, (0, helpers_1.use)(products_controller_1.getLimitedEditionProducts));
 productsRouter.get('/handpicked-collections', paginate_middleware_1.paginateMiddleware, (0, helpers_1.use)(products_controller_1.getHandpickedCollections));
-productsRouter.put('/:id', (0, helpers_1.use)(products_controller_1.uploadProductImage));
+// productsRouter.put('/:id', use(uploadProductImage));
 productsRouter.get('/search', paginate_middleware_1.paginateMiddleware, (0, helpers_1.use)(products_controller_1.searchProducts));
 productsRouter.get('/new-arrivals', paginate_middleware_1.paginateMiddleware, (0, helpers_1.use)(products_controller_1.getNewArrivals));
 productsRouter.get('/:id', (0, helpers_1.use)(products_controller_1.getProduct));

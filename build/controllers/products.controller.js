@@ -128,13 +128,19 @@ const getNewArrivals = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getNewArrivals = getNewArrivals;
 const getHandpickedCollections = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { count, rows } = yield models_1.Product.findAndCountAll({
-        where: {
-            [sequelize_1.Op.and]: [{ rating: { [sequelize_1.Op.gt]: 4.5 } }, { price: { [sequelize_1.Op.lt]: 100 } }]
-        },
-        distinct: true
-    });
-    res.json({ count, rows });
+    try {
+        const { count, rows } = yield models_1.Product.findAndCountAll({
+            where: {
+                [sequelize_1.Op.and]: [{ rating: { [sequelize_1.Op.gt]: 4.5 } }, { price: { [sequelize_1.Op.lt]: 100 } }]
+            },
+            distinct: true
+        });
+        res.json({ count, rows });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 exports.getHandpickedCollections = getHandpickedCollections;
 const searchProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

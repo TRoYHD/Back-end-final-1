@@ -1,19 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.paginateMiddleware = void 0;
-const paginate = (data) => {
-    const totalPages = Math.ceil(data.count / data.perPage);
-    const totalPerPage = data.perPage;
-    const currentPage = data.page;
-    const prevPage = currentPage === 1 ? null : currentPage - 1;
-    const nextPage = currentPage >= totalPages ? null : currentPage + 1;
+const paginate = (data, page, perPage) => {
+    const totalPages = Math.ceil(data.count / perPage);
+    const totalPerPage = perPage > data.count ? data.count : perPage;
+    const prevPage = page === 1 ? null : page - 1;
+    const nextPage = page >= totalPages ? null : page + 1;
     return {
-        data: data.data,
+        data: data.rows,
         pagination: {
             totalRecords: data.count,
-            totalPerPage: totalPerPage > data.count ? data.count : totalPerPage,
+            totalPerPage,
             totalPages,
-            currentPage,
+            currentPage: page,
             nextPage,
             prevPage
         }
@@ -29,14 +28,9 @@ const paginateMiddleware = (req, res, next) => {
         let parsedData = JSON.parse(data);
         res.send = oldSend;
         if (parsedData === null || parsedData === void 0 ? void 0 : parsedData.error)
-            res.send(parsedData);
-        const result = paginate({
-            data: parsedData.rows,
-            count: parsedData.count,
-            page,
-            perPage
-        });
-        return res.send(result);
+            return res.send(parsedData);
+        const paginatedData = paginate(parsedData, page, perPage);
+        return res.send(paginatedData);
     };
     next();
 };

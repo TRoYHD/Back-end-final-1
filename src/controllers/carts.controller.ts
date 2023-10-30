@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
-import { Cart, Product, ProductImages, User } from '../models';
+import { Cart, Product,  User } from '../models';
 import httpStatus from 'http-status';
 import { CustomError } from '../middlewares/errors';
 
@@ -80,7 +80,7 @@ const getCartProducts: RequestHandler = async (req: Request, res: Response) => {
 
   const cart = await user.getCart();
   const cartItems = await cart.$get('cartItems', {
-    include: { model: Product, include: [ProductImages] }
+    include: { model: Product }
   });
 
   res.status(httpStatus.OK).json(cartItems);
