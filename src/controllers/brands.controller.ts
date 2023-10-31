@@ -43,24 +43,7 @@ console.log('Request Files:', req.files);
   const name = body.name.trim();
   const description = body.description.trim();
 
-  if (req.files && req.files.image && !Array.isArray(req.files.image)) {
-    const imgTempPath = req.files.image.tempFilePath;
-    const result = await cloudinary.uploader.upload(imgTempPath);
 
-    const image = result.url;
-
-    const brand = await Brand.create({
-      name,
-      description,
-      image
-    });
-
-    return res.status(httpStatus.CREATED).json(brand);
-  }
-
-  res
-    .status(httpStatus.UNPROCESSABLE_ENTITY)
-    .json({ msg: 'Please upload an image' });
 };
 
 export { getBrands, getBrand, createBrand };

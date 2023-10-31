@@ -69,24 +69,7 @@ const createCategory: RequestHandler<Params, object, Category> = async (
 
   const { name, description } = body;
 
-  if (req.files && req.files.image && !Array.isArray(req.files.image)) {
-    const imgTempPath = req.files.image.tempFilePath;
-    const result = await cloudinary.uploader.upload(imgTempPath);
-
-    const image = result.url;
-
-    const category = await Category.create({
-      name,
-      description,
-      image
-    });
-
-    return res.status(httpStatus.CREATED).json(category);
-  }
-
-  res
-    .status(httpStatus.UNPROCESSABLE_ENTITY)
-    .json({ msg: 'Please upload an image' });
+  
 };
 
 export {
