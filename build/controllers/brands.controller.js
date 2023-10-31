@@ -16,7 +16,6 @@ exports.createBrand = exports.getBrand = exports.getBrands = void 0;
 const models_1 = require("../models");
 const errors_1 = require("../middlewares/errors");
 const http_status_1 = __importDefault(require("http-status"));
-const cloudinary_config_1 = __importDefault(require("../config/cloudinary.config"));
 const validators_1 = require("../validators");
 const getBrands = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const brands = yield models_1.Brand.findAll();
@@ -40,20 +39,6 @@ const createBrand = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     // Trim field names
     const name = body.name.trim();
     const description = body.description.trim();
-    if (req.files && req.files.image && !Array.isArray(req.files.image)) {
-        const imgTempPath = req.files.image.tempFilePath;
-        const result = yield cloudinary_config_1.default.uploader.upload(imgTempPath);
-        const image = result.url;
-        const brand = yield models_1.Brand.create({
-            name,
-            description,
-            image
-        });
-        return res.status(http_status_1.default.CREATED).json(brand);
-    }
-    res
-        .status(http_status_1.default.UNPROCESSABLE_ENTITY)
-        .json({ msg: 'Please upload an image' });
 });
 exports.createBrand = createBrand;
 //# sourceMappingURL=brands.controller.js.map

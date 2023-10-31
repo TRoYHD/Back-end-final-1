@@ -16,7 +16,6 @@ exports.getProductsCategory = exports.createCategory = exports.getCategory = exp
 const models_1 = require("../models");
 const errors_1 = require("../middlewares/errors");
 const http_status_1 = __importDefault(require("http-status"));
-const cloudinary_config_1 = __importDefault(require("../config/cloudinary.config"));
 const category_validator_1 = __importDefault(require("../validators/category.validator"));
 const getCategories = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const categories = yield models_1.Category.findAll();
@@ -55,20 +54,6 @@ exports.getProductsCategory = getCategoryProducts;
 const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = (0, category_validator_1.default)(req.body);
     const { name, description } = body;
-    if (req.files && req.files.image && !Array.isArray(req.files.image)) {
-        const imgTempPath = req.files.image.tempFilePath;
-        const result = yield cloudinary_config_1.default.uploader.upload(imgTempPath);
-        const image = result.url;
-        const category = yield models_1.Category.create({
-            name,
-            description,
-            image
-        });
-        return res.status(http_status_1.default.CREATED).json(category);
-    }
-    res
-        .status(http_status_1.default.UNPROCESSABLE_ENTITY)
-        .json({ msg: 'Please upload an image' });
 });
 exports.createCategory = createCategory;
 //# sourceMappingURL=categories.controller.js.map
