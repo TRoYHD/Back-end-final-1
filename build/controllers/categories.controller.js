@@ -32,7 +32,7 @@ const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getCategory = getCategory;
 const getCategoryProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const page = req.query.page ? parseInt(req.query.page) : 1;
-    const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
+    const perPage = req.query.perPage ? parseInt(req.query.perPage) : 4;
     const { id } = req.params;
     const { count, rows } = yield models_1.Product.findAndCountAll({
         include: [
