@@ -39,7 +39,7 @@ const getCategoryProducts: RequestHandler<
   res: Response
 ) => {
   const page = req.query.page ? parseInt(req.query.page) : 1;
-  const perPage = req.query.perPage ? parseInt(req.query.perPage) : 1;
+  const perPage = req.query.perPage ? parseInt(req.query.perPage) : 4;
   const { id } = req.params;
 
   const { count, rows } = await Product.findAndCountAll({
