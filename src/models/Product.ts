@@ -32,6 +32,12 @@ export default class Product extends Model {
     allowNull: false
   })
   description!: string;
+  
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false
+  })
+  longDescription!: Text;
 
   @Column({
     type: DataType.STRING,
