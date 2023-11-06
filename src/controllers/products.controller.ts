@@ -189,6 +189,8 @@ const getHandpickedCollections = async (
   req: Request<any, any, any, PaginationQuery>,
   res: Response
 ) => {
+  const page = req.query.page ? parseInt(req.query.page) : 1;
+  const perPage = req.query.perPage ? parseInt(req.query.perPage) : 4;
   try {
     const { count, rows } = await Product.findAndCountAll({
       where: {
