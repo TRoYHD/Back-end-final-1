@@ -196,7 +196,9 @@ const getHandpickedCollections = async (
       where: {
         [Op.and]: [{ rating: { [Op.gt]: 4.5 } }, { price: { [Op.lt]: 100 } }]
       },
-      distinct: true
+    offset: (page - 1) * perPage,
+    limit: perPage,
+    distinct: true
     });
 
     res.json({ count, rows });
