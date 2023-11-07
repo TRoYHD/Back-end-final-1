@@ -16,14 +16,25 @@ const signUp: RequestHandler<object, object, User> = async (
   validateUser(req.body);
   const { name, email, password } = req.body;
 
-  const user = await User.create({ name, email, password });
+  const existingUser = await User.findOne({ where: { email } });
+
+  if (existingUser) {
+    throw new CustomError('Email already exists', httpStatus.BAD_REQUEST);
+  }
+
+  // If the email is not found, create a new user
+  const newUser = await User.create({ name, email, password });
 
   const payload: Payload = {
-    id: user.id,
-    name: user.name,
-    email: user.email
+    id: newUser.id,
+    name: newUser.name,
+    email: newUser.email
   };
 
+  const token = generateToken(payload, envConfig.secret);
+
+  res.cookie('token', token, { httpOnly: true });
+  
   res.status(httpStatus.CREATED).json(payload);
 };
 
