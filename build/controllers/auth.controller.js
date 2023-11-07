@@ -23,12 +23,19 @@ const env_config_1 = __importDefault(require("../config/env.config"));
 const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     (0, validators_1.validateUser)(req.body);
     const { name, email, password } = req.body;
-    const user = yield models_1.User.create({ name, email, password });
+    const existingUser = yield models_1.User.findOne({ where: { email } });
+    if (existingUser) {
+        throw new errors_1.CustomError('Email already exists', http_status_1.default.BAD_REQUEST);
+    }
+    // If the email is not found, create a new user
+    const newUser = yield models_1.User.create({ name, email, password });
     const payload = {
-        id: user.id,
-        name: user.name,
-        email: user.email
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email
     };
+    const token = (0, helpers_1.generateToken)(payload, env_config_1.default.secret);
+    res.cookie('token', token, { httpOnly: true });
     res.status(http_status_1.default.CREATED).json(payload);
 });
 exports.signUp = signUp;
