@@ -165,7 +165,7 @@ const getNewArrivals: RequestHandler<
   res: Response
 ) => {
   const page = req.query.page ? parseInt(req.query.page) : 1;
-  const perPage = req.query.perPage ? parseInt(req.query.perPage) : 4;
+  const perPage = req.query.perPage ? parseInt(req.query.perPage) : 5;
 
   const currentDate = new Date();
   const threeMonthsAgo = new Date();
