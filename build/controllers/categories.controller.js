@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductsCategory = exports.createCategory = exports.getCategory = exports.getCategories = void 0;
+exports.getBrandsProducts = exports.getProductsCategory = exports.createCategory = exports.getCategory = exports.getCategories = void 0;
 const models_1 = require("../models");
 const errors_1 = require("../middlewares/errors");
 const http_status_1 = __importDefault(require("http-status"));
@@ -51,6 +51,27 @@ const getCategoryProducts = (req, res) => __awaiter(void 0, void 0, void 0, func
     res.json({ count, rows });
 });
 exports.getProductsCategory = getCategoryProducts;
+const getBrandsProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const perPage = req.query.perPage ? parseInt(req.query.perPage) : 4;
+    const { id } = req.params;
+    const { count, rows } = yield models_1.Product.findAndCountAll({
+        include: [
+            {
+                model: models_1.Brand,
+                where: {
+                    id
+                },
+                attributes: []
+            },
+        ],
+        offset: (page - 1) * perPage,
+        limit: perPage,
+        distinct: true
+    });
+    res.json({ count, rows });
+});
+exports.getBrandsProducts = getBrandsProducts;
 const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = (0, category_validator_1.default)(req.body);
     const { name, description } = body;
