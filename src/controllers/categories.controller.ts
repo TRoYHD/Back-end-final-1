@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { Category, Product,  } from '../models';
+import { Category, Product, Brand  } from '../models';
 import { CustomError } from '../middlewares/errors';
 import httpStatus from 'http-status';
 import cloudinary from '../config/cloudinary.config';
@@ -60,6 +60,37 @@ const getCategoryProducts: RequestHandler<
 
   res.json({ count, rows });
 };
+const getBrandsProducts: RequestHandler<
+  Params,
+  object,
+  object,
+  PaginationQuery
+> = async (
+  req: Request<Params, object, object, PaginationQuery>,
+  res: Response
+) => {
+  const page = req.query.page ? parseInt(req.query.page) : 1;
+  const perPage = req.query.perPage ? parseInt(req.query.perPage) : 4;
+  const { id } = req.params;
+
+  const { count, rows } = await Product.findAndCountAll({
+    include: [
+      {
+        model: Brand,
+        where: {
+          id
+        },
+        attributes: []
+      },
+      
+    ],
+    offset: (page - 1) * perPage,
+    limit: perPage,
+    distinct: true
+  });
+
+  res.json({ count, rows });
+};
 
 const createCategory: RequestHandler<Params, object, Category> = async (
   req: Request<Params, object, Category>,
@@ -76,5 +107,6 @@ export {
   getCategories,
   getCategory,
   createCategory,
-  getCategoryProducts as getProductsCategory
+  getCategoryProducts as getProductsCategory,
+  getBrandsProducts as getBrandsProducts
 };
