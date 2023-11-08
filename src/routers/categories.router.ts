@@ -20,7 +20,7 @@ categoriesRouter.get(
   use(getProductsCategory) 
 )
 categoriesRouter.get(
-  '/:id/products',
+  '/:id/products/brands',
   paginateMiddleware,
   use(getBrandsProducts) 
 );

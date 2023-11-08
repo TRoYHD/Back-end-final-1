@@ -9,6 +9,6 @@ categoriesRouter.get('/', (0, helpers_1.use)(categories_controller_1.getCategori
 categoriesRouter.post('/', (0, helpers_1.use)(categories_controller_1.createCategory));
 categoriesRouter.get('/:id', (0, helpers_1.use)(categories_controller_1.getCategory));
 categoriesRouter.get('/:id/products', paginate_middleware_1.paginateMiddleware, (0, helpers_1.use)(categories_controller_1.getProductsCategory));
-categoriesRouter.get('/:id/products', paginate_middleware_1.paginateMiddleware, (0, helpers_1.use)(categories_controller_1.getBrandsProducts));
+categoriesRouter.get('/:id/products/brands', paginate_middleware_1.paginateMiddleware, (0, helpers_1.use)(categories_controller_1.getBrandsProducts));
 exports.default = categoriesRouter;
 //# sourceMappingURL=categories.router.js.map
