@@ -3,7 +3,8 @@ import {
   createCategory,
   getCategory,
   getCategories,
-  getProductsCategory
+  getProductsCategory ,
+  getBrandsProducts
 } from '../controllers/categories.controller';
 import { use } from '../helpers';
 import { paginateMiddleware } from '../middlewares/paginate.middleware';
@@ -16,7 +17,12 @@ categoriesRouter.get('/:id', use(getCategory));
 categoriesRouter.get(
   '/:id/products',
   paginateMiddleware,
-  use(getProductsCategory)
+  use(getProductsCategory) 
+)
+categoriesRouter.get(
+  '/:id/products',
+  paginateMiddleware,
+  use(getBrandsProducts) 
 );
 
 export default categoriesRouter;
