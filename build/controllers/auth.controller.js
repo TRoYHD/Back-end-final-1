@@ -35,8 +35,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         email: newUser.email
     };
     const token = (0, helpers_1.generateToken)(payload, env_config_1.default.secret);
-    res.cookie('token', token, { httpOnly: true });
-    res.status(http_status_1.default.CREATED).json(payload);
+    res.json({ user: payload, token });
 });
 exports.signUp = signUp;
 const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -55,7 +54,6 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         email: user.email
     };
     const token = (0, helpers_1.generateToken)(payload, env_config_1.default.secret);
-    res.cookie('token', token, { httpOnly: true });
     res.json({ user: payload, token });
 });
 exports.signIn = signIn;
