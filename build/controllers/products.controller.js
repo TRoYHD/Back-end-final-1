@@ -110,7 +110,7 @@ const getLimitedEditionProducts = (req, res) => __awaiter(void 0, void 0, void 0
 exports.getLimitedEditionProducts = getLimitedEditionProducts;
 const getNewArrivals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const page = req.query.page ? parseInt(req.query.page) : 1;
-    const perPage = req.query.perPage ? parseInt(req.query.perPage) : 4;
+    const perPage = req.query.perPage ? parseInt(req.query.perPage) : 5;
     const currentDate = new Date();
     const threeMonthsAgo = new Date();
     threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
