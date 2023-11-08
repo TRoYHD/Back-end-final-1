@@ -33,9 +33,7 @@ const signUp: RequestHandler<object, object, User> = async (
 
   const token = generateToken(payload, envConfig.secret);
 
-  res.cookie('token', token, { httpOnly: true });
-  
-  res.status(httpStatus.CREATED).json(payload);
+  res.json({ user: payload, token })  
 };
 
 const signIn: RequestHandler<object, object, SignIn> = async (
@@ -63,9 +61,7 @@ const signIn: RequestHandler<object, object, SignIn> = async (
 
   const token = generateToken(payload, envConfig.secret);
 
-  res.cookie('token', token, { httpOnly: true });
-
-  res.json({ user: payload, token });
+  res.json({ user: payload, token })
 };
 
 const signOut: RequestHandler = async (req: Request, res: Response) => {
