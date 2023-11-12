@@ -2,6 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { CustomError } from './errors';
 import httpStatus from 'http-status';
+import envConfig from '../config/env.config';
 
 declare global {
   namespace Express {
@@ -16,22 +17,30 @@ const setUserId: RequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  // Assuming you store the token in local storage under the key 'token'
-  const token = localStorage.getItem('token');
+  // Check for the Authorization header
+  const token = req.header('Authorization');
 
   if (!token) {
     next(new CustomError('Unauthenticated', httpStatus.UNAUTHORIZED));
-    return; // Make sure to return after calling next to stop further execution
+    return;
   }
 
-  const user = jwt.decode(token) as { id: number };
-  if (!user || typeof user.id !== 'number') {
+  try {
+    // Verify the token and decode the user information
+    const user = jwt.verify(token, envConfig.secret) as { id: number };
+
+    // Ensure the decoded user object has the expected format
+    if (!user || typeof user.id !== 'number') {
+      throw new Error('Invalid token content');
+    }
+
+    // Attach the user ID to the request object
+    req.userId = user.id;
+    next();
+  } catch (error) {
+    console.error('Token verification error:', error);
     next(new CustomError('Invalid token', httpStatus.UNAUTHORIZED));
-    return; // Make sure to return after calling next to stop further execution
   }
-
-  req.userId = user.id;
-  next();
 };
 
 export { setUserId };
