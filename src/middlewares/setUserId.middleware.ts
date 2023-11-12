@@ -16,9 +16,20 @@ const setUserId: RequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  const { token } = req.cookies;
-  if (!token) next(new CustomError('Unauthenticated', httpStatus.UNAUTHORIZED));
+  // Assuming you store the token in local storage under the key 'token'
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    next(new CustomError('Unauthenticated', httpStatus.UNAUTHORIZED));
+    return; // Make sure to return after calling next to stop further execution
+  }
+
   const user = jwt.decode(token) as { id: number };
+  if (!user || typeof user.id !== 'number') {
+    next(new CustomError('Invalid token', httpStatus.UNAUTHORIZED));
+    return; // Make sure to return after calling next to stop further execution
+  }
+
   req.userId = user.id;
   next();
 };
