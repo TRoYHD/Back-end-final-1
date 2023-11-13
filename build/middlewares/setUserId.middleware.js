@@ -12,13 +12,17 @@ const setUserId = (req, res, next) => {
     // Check for the Authorization header
     const token = req.header('Authorization');
     console.log('Received Token:', token);
-    if (!token) {
-        next(new errors_1.CustomError('Unauthenticated', http_status_1.default.UNAUTHORIZED));
+    // Check if token format is correct
+    if (!token || !token.startsWith('Bearer ')) {
+        console.error('Invalid token format');
+        next(new errors_1.CustomError('Invalid token format', http_status_1.default.UNAUTHORIZED));
         return;
     }
     try {
+        // Extract token without the "Bearer " prefix
+        const tokenWithoutBearer = token.slice('Bearer '.length);
         // Verify the token and decode the user information
-        const user = jsonwebtoken_1.default.verify(token, env_config_1.default.secret);
+        const user = jsonwebtoken_1.default.verify(tokenWithoutBearer, env_config_1.default.secret);
         // Ensure the decoded user object has the expected format
         if (!user || typeof user.id !== 'number') {
             throw new Error('Invalid token content');
@@ -27,9 +31,15 @@ const setUserId = (req, res, next) => {
         req.userId = user.id;
         next();
     }
-    catch (error) {
+    catch (error) { // Use 'any' type here
         console.error('Token verification error:', error);
-        next(new errors_1.CustomError('Invalid token', http_status_1.default.UNAUTHORIZED));
+        // Handle TokenExpiredError separately
+        if (error.name === 'TokenExpiredError') {
+            next(new errors_1.CustomError('Token expired', http_status_1.default.UNAUTHORIZED));
+        }
+        else {
+            next(new errors_1.CustomError('Invalid token', http_status_1.default.UNAUTHORIZED));
+        }
     }
 };
 exports.setUserId = setUserId;

@@ -20,16 +20,21 @@ const setUserId: RequestHandler = (
   // Check for the Authorization header
   const token = req.header('Authorization');
   console.log('Received Token:', token);
-  
-  if (!token) {
-    next(new CustomError('Unauthenticated', httpStatus.UNAUTHORIZED));
+
+  // Check if token format is correct
+  if (!token || !token.startsWith('Bearer ')) {
+    console.error('Invalid token format');
+    next(new CustomError('Invalid token format', httpStatus.UNAUTHORIZED));
     return;
   }
 
   try {
+    // Extract token without the "Bearer " prefix
+    const tokenWithoutBearer = token.slice('Bearer '.length);
+
     // Verify the token and decode the user information
-    const user = jwt.verify(token, envConfig.secret) as { id: number };
-   
+    const user = jwt.verify(tokenWithoutBearer, envConfig.secret) as { id: number };
+
     // Ensure the decoded user object has the expected format
     if (!user || typeof user.id !== 'number') {
       throw new Error('Invalid token content');
@@ -38,11 +43,16 @@ const setUserId: RequestHandler = (
     // Attach the user ID to the request object
     req.userId = user.id;
     next();
-  } catch (error) {
+  } catch (error: any) { // Use 'any' type here
     console.error('Token verification error:', error);
-    next(new CustomError('Invalid token', httpStatus.UNAUTHORIZED));
+
+    // Handle TokenExpiredError separately
+    if (error.name === 'TokenExpiredError') {
+      next(new CustomError('Token expired', httpStatus.UNAUTHORIZED));
+    } else {
+      next(new CustomError('Invalid token', httpStatus.UNAUTHORIZED));
+    }
   }
 };
-
 
 export { setUserId };
