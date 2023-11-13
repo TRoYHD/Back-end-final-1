@@ -19,7 +19,8 @@ const setUserId: RequestHandler = (
 ) => {
   // Check for the Authorization header
   const token = req.header('Authorization');
-
+  console.log('Received Token:', token);
+  
   if (!token) {
     next(new CustomError('Unauthenticated', httpStatus.UNAUTHORIZED));
     return;
@@ -28,7 +29,7 @@ const setUserId: RequestHandler = (
   try {
     // Verify the token and decode the user information
     const user = jwt.verify(token, envConfig.secret) as { id: number };
-
+   
     // Ensure the decoded user object has the expected format
     if (!user || typeof user.id !== 'number') {
       throw new Error('Invalid token content');
@@ -42,5 +43,6 @@ const setUserId: RequestHandler = (
     next(new CustomError('Invalid token', httpStatus.UNAUTHORIZED));
   }
 };
+
 
 export { setUserId };

@@ -11,6 +11,7 @@ const env_config_1 = __importDefault(require("../config/env.config"));
 const setUserId = (req, res, next) => {
     // Check for the Authorization header
     const token = req.header('Authorization');
+    console.log('Received Token:', token);
     if (!token) {
         next(new errors_1.CustomError('Unauthenticated', http_status_1.default.UNAUTHORIZED));
         return;
